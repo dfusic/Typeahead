@@ -1,0 +1,32 @@
+.input{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    border: 1px solid rgba(0,0,0,0.3);
+    border-radius: 8px;
+    
+}
+
+.input > input{
+    border: none;
+    padding: 16px 16px 16px 8px;
+    outline: none;
+}
+
+.tagList{
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.tagList > li{
+    padding: 0 5px;
+    background-color: red;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+}
