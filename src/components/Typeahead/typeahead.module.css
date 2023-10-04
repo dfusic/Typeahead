@@ -1,0 +1,27 @@
+.typeahead {
+    border: 1px solid red;
+    border-radius: 4px;
+}
+
+.inputWrapper {
+  max-width: 500px;
+  width: 500px;
+  display: flex;
+  flex-direction: row;
+  border-radius: 4px;
+}
+
+.pillList{
+    max-width: 300px;
+    overflow-x: scroll;
+    display: flex;
+}
+
+.input{
+    width: calc(100% - 300px);
+    border: 1px solid red;
+    height: 100%;
+    margin-right: 4px;
+    padding: 8px;
+    border: none;
+}

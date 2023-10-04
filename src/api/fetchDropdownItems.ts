@@ -5,6 +5,15 @@ export interface State {
     name: string
 }
 
-export const fetchDropdownItems = (): State[] => {
-  return states;
+export const fetchDropdownItems = () => {
+  // check if the states are already saved inside of local storage
+  // if not it should do a GET request and save it
+
+  const localStorageStates = localStorage.getItem('states');
+  if(!localStorageStates){
+    // mock request, in this case we just set JSON as states
+    localStorage.setItem('states', JSON.stringify(states));
+  }else{
+    return JSON.parse(localStorageStates);
+  }
 };

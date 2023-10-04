@@ -1,20 +1,23 @@
-import styles from './input.module.css'
-
 interface InputProps {
-    onChange: () => void;
-    onBlur: () => void;
-    value: string;
+  onChange?: (e) => void;
+  onBlur?: () => void;
+  value?: string;
+  onFocus?: () => void;
+  className?: string;
 }
 
-const Input = ({onChange, onBlur, value}: InputProps) => (
-    <div className={styles.input}>
-        <ul className={styles.tagList}>
-            <li>New York <span>X</span></li>
-            <li>New York <span>X</span></li>
-            <li>New York <span>X</span></li>
-        </ul>
-        <input type="text" onChange={onChange} onBlur={onBlur} value={value}/>
-    </div>
-)
+const Input = ({ onChange, onBlur, onFocus, value, className }: InputProps) => {
+  return (
+    <input
+      type="text"
+      onChange={(e) => onChange(e)}
+      onBlur={onBlur}
+      onFocus={onFocus}
+      value={value}
+      className={className}
+      placeholder="Search states..."
+    />
+  );
+};
 
 export default Input;

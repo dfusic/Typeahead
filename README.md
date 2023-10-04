@@ -1,27 +1,29 @@
-# React + TypeScript + Vite
+# Typeahead component
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+## Questions
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. If you had control of the web-server, what are some ways you might implement a caching solution?
 
-## Expanding the ESLint configuration
+- 
+2. How might you implement offline caching for your typeahead component?
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- 
+3. When using traditional session cookies, what are the primary security concerns and
+mitigation techniques you might use?
 
-- Configure the top-level `parserOptions` property like this:
+- 
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
+4. What are some advantages and disadvantages to using JWT for authorization and authentication in a web application?
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- 
+5. What are all the ways you can think of to write BAD React code?
+
+- Main problem in most of the applications is state management. Due to this a lot of applications fall into the problem of prop drilling and passing props across multiple levels. That can be fixed by implementing a global state management solution such as Redux, Zustand, etc. 
+
+- In terms of general bad code, most of the applications ignore the general code cleaniness. This can also be fixed by introducing ESLint and Prettier.
+
+
+6. What new Web or React APIs are you most excited about?
+
+- React Server Components. This will completely change the server side rendering technologies as it will be handled out of the box. Server side rendering is currently used for directly delivering .html to the browser and without server side rendering React is actually sending out a empty html and after some time it fetches the JS bundle of the app. Due to this, clients usually see a white screen for a couple of seconds before the application loads. This also affects the Google Lighthouse score which directly changes the SEO and a search position for the search engines.
