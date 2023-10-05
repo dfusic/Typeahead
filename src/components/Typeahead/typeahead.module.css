@@ -1,5 +1,5 @@
 .typeahead {
-    border: 1px solid red;
+    border: 1px solid #ced4da;
     border-radius: 4px;
 }
 
@@ -15,13 +15,15 @@
     max-width: 300px;
     overflow-x: scroll;
     display: flex;
+    align-items: center;
 }
 
 .input{
     width: calc(100% - 300px);
-    border: 1px solid red;
+    border: 1px solid #ced4da;
     height: 100%;
     margin-right: 4px;
     padding: 8px;
     border: none;
+    outline: none;
 }

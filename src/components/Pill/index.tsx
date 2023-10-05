@@ -6,7 +6,7 @@ interface PillProps {
 }
 
 const Pill = ({value, onClose}: PillProps) => {
-    return <li className={styles.pill}>{value}
+    return <li tabIndex={0} className={styles.pill}>{value}
     {onClose && <span className={styles.pillCloseButton} onClick={onClose}>X</span>}
     </li>
 }

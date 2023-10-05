@@ -9,6 +9,7 @@ interface InputProps {
 const Input = ({ onChange, onBlur, onFocus, value, className }: InputProps) => {
   return (
     <input
+      tabIndex={1}
       type="text"
       onChange={(e) => onChange(e)}
       onBlur={onBlur}

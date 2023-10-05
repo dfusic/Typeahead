@@ -1,9 +1,12 @@
 .pill{
     padding: 8px;
-    background-color: #89AAE6;
-    color: white;
+    background-color: rgba(0, 123, 255, 0.2);
+    color: #007bff;
     border-radius: 4px;
     font-size: 12px;
+    box-sizing: border-box;
+    padding:  4px;
+    height: 25px;
     list-style: none;
     margin-right: 4px;
     display: flex;
