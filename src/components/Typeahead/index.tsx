@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { State } from "../../api/fetchDropdownItems";
 
 import Dropdown, { DropdownItemType } from "../Dropdown";
+import Pills from "../Pills";
 
 interface TypeaheadProps {
   items: State[];
@@ -27,6 +28,18 @@ const Typeahead = ({ items, onItemSelect }: TypeaheadProps) => {
   }, [items]);
 
   useEffect(() => {
+    onItemSelect && onItemSelect(selectedItems);
+  }, [selectedItems])
+
+  useEffect(() => {
+    const selectedStates = dropdownItems.filter((item: DropdownItemType) => {
+      return item.selected;
+    })
+
+    console.log("dropdownItemsUpdate", {dropdownItems})
+
+    setSelectedItems(selectedStates);
+
     if (dropdownItems.length > 0) {
       setFilteredItems(dropdownItems);
     }
@@ -71,20 +84,31 @@ const Typeahead = ({ items, onItemSelect }: TypeaheadProps) => {
 
     if (checked) {
       setSelectedItems([...selectedItems, clickedElement]);
+      setDropdownItems([...dropdownItems, ...selectedItems]);
     } else {
-      const statesWithoutClicked = items.filter((item: State) => {
-        return String(item.id) !== id;
+      const statesWithoutClicked = selectedItems.filter((item: State) => {
+        return String(item.id) !== String(id);
       });
       setSelectedItems(statesWithoutClicked);
+      setDropdownItems([...dropdownItems, ...selectedItems])
     }
 
-    onItemSelect && onItemSelect(selectedItems);
-
-    console.log({selectedItems})
   };
+
+  const handleRemoveSelectedState = (item: State) => {
+    const filteredStates = selectedItems.filter((state: State) => {
+      return String(state.id) !== String(item.id);
+    });
+
+
+
+    setSelectedItems(filteredStates);
+    console.log({selectedItems})
+  }
 
   return (
     <div className="typeahead">
+      <Pills items={selectedItems} onDelete={handleRemoveSelectedState}/>
       <div className="typeahead--input">
         <input
           type="text"
