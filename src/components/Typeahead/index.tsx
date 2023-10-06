@@ -1,90 +1,109 @@
-import { useEffect, useState } from "react";
-
-import { fetchDropdownItems } from "../../api";
+import { useState, useEffect } from "react";
 import { State } from "../../api/fetchDropdownItems";
 
-import Pill from "../Pill";
-import Dropdown from "../Dropdown";
-import Input from "./Input";
+import Dropdown, { DropdownItemType } from "../Dropdown";
 
-import styles from "./typeahead.module.css";
+interface TypeaheadProps {
+  items: State[];
+  onItemSelect: (states: State[]) => void;
+}
 
-const TypeAhead = () => {
-  const [initialStates, setInitialStates] = useState<State[]>([]);
-  const [states, setStates] = useState<State[]>([]);
-  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+const Typeahead = ({ items, onItemSelect }: TypeaheadProps) => {
+  const [hasFoundItems, setHasFoundItems] = useState<boolean>(false);
+  const [dropdownItems, setDropdownItems] = useState<DropdownItemType[]>([]);
+  const [filteredItems, setFilteredItems] = useState<DropdownItemType[]>([]);
+  const [selectedItems, setSelectedItems] = useState<State[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
-  const [selectedStates, setSelectedStates] = useState<State[]>([]);
 
   useEffect(() => {
-    const dropdownItems: State[] = fetchDropdownItems();
-    setInitialStates(dropdownItems);
-  }, []);
-
-  useEffect(() => {
-    setStates(initialStates);
-  }, [initialStates]);
-
-  useEffect(() => {
-    const formattedInputValue = inputValue.replace(/\s/g, "").toLowerCase();
-    const foundStates = initialStates.filter((state: State) => {
-      const formattedStateName = state.name.replace(/\s/g, "").toLowerCase();
-      return formattedStateName.includes(formattedInputValue);
-    });
-
-    setStates(foundStates);
-  }, [inputValue, initialStates]);
-
-  const handleDropdownItemClick = (item: State) => {
-    const isItemAlreadySelected = selectedStates.find(
-      (state: State) => state.id === item.id
-    );
-    if (isItemAlreadySelected) {
-      alert("State already selected!");
-      return;
+    if (items) {
+      setHasFoundItems(true);
+      const formattedDropdownItems = items.map((item: State) => ({
+        ...item,
+        selected: false,
+      }));
+      setDropdownItems(formattedDropdownItems);
     }
+  }, [items]);
 
-    setSelectedStates([...selectedStates, item]);
-  };
+  useEffect(() => {
+    if (dropdownItems.length > 0) {
+      setFilteredItems(dropdownItems);
+    }
+  }, [dropdownItems]);
 
-  const handleStateDelete = (item: State) => {
-    const filteredSelectedStates = selectedStates.filter(
-      (state) => state.id !== item.id
+  useEffect(() => {
+    setHasFoundItems(true);
+    const formattedInputValue = inputValue.toLowerCase();
+    const filteredDropdownItems = dropdownItems.filter(
+      (item: DropdownItemType) => {
+        return item.name.toLowerCase().includes(formattedInputValue);
+      }
     );
-    setSelectedStates(filteredSelectedStates);
-  };
 
-  const handleInputChange = (event) => {
+    setFilteredItems(filteredDropdownItems);
+  }, [inputValue]);
+
+  // functions
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
   };
 
+  const handleSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, checked } = event.target;
+    const clickedElement = items.find((item: State) => {
+      return String(item.id) === id;
+    });
+
+    const itemId = dropdownItems.findIndex((item: DropdownItemType) => {
+      return String(item.id) === id;
+    });
+
+    const dropdownItemsCopy = dropdownItems;
+    dropdownItemsCopy[itemId].selected = !dropdownItemsCopy[itemId].selected;
+    // update the list of the items
+    setDropdownItems(dropdownItemsCopy);
+    // reset the filter
+    setFilteredItems(dropdownItems);
+    // reset the input
+    setInputValue("");
+
+    if (checked) {
+      setSelectedItems([...selectedItems, clickedElement]);
+    } else {
+      const statesWithoutClicked = items.filter((item: State) => {
+        return String(item.id) !== id;
+      });
+      setSelectedItems(statesWithoutClicked);
+    }
+
+    onItemSelect && onItemSelect(selectedItems);
+
+    console.log({selectedItems})
+  };
+
   return (
-    <div className={styles.typeahead}>
-      <div className={styles.inputWrapper}>
-        <div className={styles.pillList}>
-          {selectedStates.map((state: State) => (
-            <Pill
-              value={state.name}
-              key={state.id}
-              onClose={() => handleStateDelete(state)}
-            />
-          ))}
-        </div>
-        <Input
-          onFocus={() => setIsDropdownOpen(true)}
+    <div className="typeahead">
+      <div className="typeahead--input">
+        <input
+          type="text"
+          name=""
+          id=""
+          onChange={handleInputChange}
           value={inputValue}
-          onChange={(event) => handleInputChange(event)}
-          className={styles.input}
         />
       </div>
-      {isDropdownOpen && states.length > 0 && (
+      {hasFoundItems && (
         <Dropdown
-          onItemClick={(item) => handleDropdownItemClick(item)}
-          items={states}
+          items={filteredItems}
+          onItemSelect={(event: React.ChangeEvent<HTMLInputElement>) =>
+            handleSelect(event)
+          }
         />
       )}
     </div>
   );
 };
 
-export default TypeAhead;
+export default Typeahead;
